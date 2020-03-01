@@ -2,11 +2,56 @@
 ### Do not make changes to this file directly
 
 
+type Account {
+  birms(input: CoordinatesInput!): [Birm!]!
+}
+
+input AuthenticateUserInput {
+  password: String
+  username: String
+}
+
+type AuthenticateUserPayload {
+  token: String
+}
+
+type Birm {
+  id: ID!
+  location: Location!
+  name: String!
+}
+
+input CoordinatesInput {
+  coordinates: [Float!]
+}
+
+input CreateBirmInput {
+  coordinates: [Float!]
+  name: String
+}
+
+input CreateUserInput {
+  password: String
+  username: String
+}
+
+type Location {
+  coordinates: [Float!]!
+  type: String!
+}
+
+type Mutation {
+  authenticate(input: AuthenticateUserInput!): AuthenticateUserPayload!
+  createBirm(input: CreateBirmInput!): Birm!
+  createUser(input: CreateUserInput!): User!
+}
+
 type Query {
   viewer: User!
 }
 
 type User {
+  account: Account!
   id: ID!
-  name: String
+  username: String
 }

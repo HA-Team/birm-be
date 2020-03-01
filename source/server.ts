@@ -2,20 +2,42 @@ import { ApolloServer } from "apollo-server";
 import { makeSchema } from "nexus";
 import * as allTypes from "./schema";
 import * as path from "path";
+import createContext from "./context";
+import mongoose from "mongoose";
+import config from "./config";
+import { createApi } from "./api";
 
-const nexusSchema = makeSchema({
-  types: allTypes,
-  outputs: {
-    schema: path.join(__dirname, "../schema.graphql"),
-    typegen: path.join(__dirname, "../schema.d.ts")
+async function startServer() {
+  try {
+    console.log('Connecting to database...');
+    await mongoose.connect(config.dbUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+
+    console.log('Connected!');
+
+    const nexusSchema = makeSchema({
+      types: allTypes,
+      outputs: {
+        schema: path.join(__dirname, "../schema.graphql"),
+        typegen: path.join(__dirname, "../schema.d.ts")
+      }
+    });
+
+    const server = new ApolloServer({
+      schema: nexusSchema,
+      // mocks: true,
+      context: createContext,
+      dataSources: createApi
+    });
+
+    server.listen().then(({ url }) => {
+      console.log(`🚀  Server ready at ${url}`);
+    });
+  } catch (err) {
+    console.error("Error in db connection: ", err);
   }
-});
+}
 
-const server = new ApolloServer({
-  schema: nexusSchema,
-  mocks: true
-});
-
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+startServer();

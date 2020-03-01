@@ -14,15 +14,45 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AuthenticateUserInput: { // input type
+    password?: string | null; // String
+    username?: string | null; // String
+  }
+  CoordinatesInput: { // input type
+    coordinates?: number[] | null; // [Float!]
+  }
+  CreateBirmInput: { // input type
+    coordinates?: number[] | null; // [Float!]
+    name?: string | null; // String
+  }
+  CreateUserInput: { // input type
+    password?: string | null; // String
+    username?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
+  Account: {};
+  AuthenticateUserPayload: { // root type
+    token?: string | null; // String
+  }
+  Birm: { // root type
+    id: string; // ID!
+    location: NexusGenRootTypes['Location']; // Location!
+    name: string; // String!
+  }
+  Location: { // root type
+    coordinates: number[]; // [Float!]!
+    type: string; // String!
+  }
+  Mutation: {};
   Query: {};
   User: { // root type
     id: string; // ID!
+    username?: string | null; // String
   }
   String: string;
   Int: number;
@@ -32,19 +62,60 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  AuthenticateUserInput: NexusGenInputs['AuthenticateUserInput'];
+  CoordinatesInput: NexusGenInputs['CoordinatesInput'];
+  CreateBirmInput: NexusGenInputs['CreateBirmInput'];
+  CreateUserInput: NexusGenInputs['CreateUserInput'];
 }
 
 export interface NexusGenFieldTypes {
+  Account: { // field return type
+    birms: NexusGenRootTypes['Birm'][]; // [Birm!]!
+  }
+  AuthenticateUserPayload: { // field return type
+    token: string | null; // String
+  }
+  Birm: { // field return type
+    id: string; // ID!
+    location: NexusGenRootTypes['Location']; // Location!
+    name: string; // String!
+  }
+  Location: { // field return type
+    coordinates: number[]; // [Float!]!
+    type: string; // String!
+  }
+  Mutation: { // field return type
+    authenticate: NexusGenRootTypes['AuthenticateUserPayload']; // AuthenticateUserPayload!
+    createBirm: NexusGenRootTypes['Birm']; // Birm!
+    createUser: NexusGenRootTypes['User']; // User!
+  }
   Query: { // field return type
     viewer: NexusGenRootTypes['User']; // User!
   }
   User: { // field return type
+    account: NexusGenRootTypes['Account']; // Account!
     id: string; // ID!
-    name: string | null; // String
+    username: string | null; // String
   }
 }
 
 export interface NexusGenArgTypes {
+  Account: {
+    birms: { // args
+      input: NexusGenInputs['CoordinatesInput']; // CoordinatesInput!
+    }
+  }
+  Mutation: {
+    authenticate: { // args
+      input: NexusGenInputs['AuthenticateUserInput']; // AuthenticateUserInput!
+    }
+    createBirm: { // args
+      input: NexusGenInputs['CreateBirmInput']; // CreateBirmInput!
+    }
+    createUser: { // args
+      input: NexusGenInputs['CreateUserInput']; // CreateUserInput!
+    }
+  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -52,9 +123,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Query" | "User";
+export type NexusGenObjectNames = "Account" | "AuthenticateUserPayload" | "Birm" | "Location" | "Mutation" | "Query" | "User";
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = "AuthenticateUserInput" | "CoordinatesInput" | "CreateBirmInput" | "CreateUserInput";
 
 export type NexusGenEnumNames = never;
 
