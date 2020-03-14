@@ -1,5 +1,4 @@
 import { mutationField, inputObjectType, objectType, arg } from "nexus";
-import { resolve } from "dns";
 
 export const AuthenticateUserInput = inputObjectType({
   name: "AuthenticateUserInput",
