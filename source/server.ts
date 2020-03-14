@@ -3,19 +3,16 @@ import { makeSchema } from "nexus";
 import * as allTypes from "./schema";
 import * as path from "path";
 import createContext from "./context";
-import mongoose from "mongoose";
-import config from "./config";
-import { createApi } from "./api";
+import dataApi from "./data";
 
 async function startServer() {
   try {
-    console.log('Connecting to database...');
-    await mongoose.connect(config.dbUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    console.log("Connecting to database...");
+    await dataApi.connectDb();
 
-    console.log('Connected!');
+    if (dataApi.mongoDbConnected) {
+      console.log("Connected!");
+    }
 
     const nexusSchema = makeSchema({
       types: allTypes,
@@ -27,9 +24,8 @@ async function startServer() {
 
     const server = new ApolloServer({
       schema: nexusSchema,
-      // mocks: true,
       context: createContext,
-      dataSources: createApi
+      dataSources: dataApi.createDataSources
     });
 
     server.listen().then(({ url }) => {

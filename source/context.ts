@@ -22,7 +22,7 @@ export class Context {
   }
 
   getUserId(): string {
-    if (Boolean(this.token)) {
+    if (this.token) {
       const decoded = jwt.decode(this.token, { json: true });
 
       if (decoded?.userId) {
@@ -39,6 +39,8 @@ type TExpressContext = {
   res: Response;
 };
 
-export default function createContext(expressContext: TExpressContext) {
+export default function createContext(
+  expressContext: TExpressContext
+): Context {
   return new Context(expressContext.req, expressContext.res);
 }

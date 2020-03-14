@@ -1,15 +1,32 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../config";
-import MongoDataSource from "../MongoDataSource";
-import UserModel from './UserModel';
+import DataSource from "../DataSource";
+import { Collection, MongoClient, ObjectId } from "mongodb";
 
-export default class User extends MongoDataSource {
-  name = "User";
+export type TUser = {
+  _id?: string | ObjectId;
+  username: string;
+  password: string;
+};
+
+export default class User extends DataSource {
+  private users: Collection<TUser>;
+
+  constructor(mongoClient: MongoClient) {
+    super();
+
+    this.users = mongoClient.db("birm").collection("users");
+
+    //Method bindings
+    this.login = this.login.bind(this);
+    this.getUser = this.getUser.bind(this);
+    this.createUser = this.createUser.bind(this);
+  }
 
   async login(username: string, password: string) {
     try {
-      const user = await UserModel.findOne({ username });
+      const user = await this.users.findOne({ username });
 
       if (user) {
         const passwordVerified = await bcrypt.compare(password, user.password);
@@ -28,6 +45,8 @@ export default class User extends MongoDataSource {
           };
         }
       }
+
+      throw new Error("User not found");
     } catch (err) {
       throw new Error(err);
     }
@@ -35,13 +54,13 @@ export default class User extends MongoDataSource {
 
   async getUser(userId: string) {
     try {
-      const user = await UserModel.findOne({ _id: userId });
+      const user = await this.users.findOne({ _id: new ObjectId(userId) });
 
       if (user) {
         return user;
       }
 
-      return null;
+      return new Error("User not found");
     } catch (err) {
       return new Error(err);
     }
@@ -53,14 +72,14 @@ export default class User extends MongoDataSource {
     const hash = await bcrypt.hash(password, saltRounds);
 
     try {
-      const newUser = await new UserModel({
+      const newUser = await this.users.insertOne({
         username,
         password: hash
-      }).save();
+      });
 
       return newUser;
     } catch (err) {
-      return err;
+      throw new Error(err);
     }
   }
 }

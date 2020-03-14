@@ -18,8 +18,9 @@ export interface NexusGenInputs {
     password?: string | null; // String
     username?: string | null; // String
   }
-  CoordinatesInput: { // input type
+  BirmsNearLocationInput: { // input type
     coordinates?: number[] | null; // [Float!]
+    maxDistance?: number | null; // Int
   }
   CreateBirmInput: { // input type
     coordinates?: number[] | null; // [Float!]
@@ -51,6 +52,7 @@ export interface NexusGenRootTypes {
   Mutation: {};
   Query: {};
   User: { // root type
+    _id?: string | null; // String
     id: string; // ID!
     username?: string | null; // String
   }
@@ -63,7 +65,7 @@ export interface NexusGenRootTypes {
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   AuthenticateUserInput: NexusGenInputs['AuthenticateUserInput'];
-  CoordinatesInput: NexusGenInputs['CoordinatesInput'];
+  BirmsNearLocationInput: NexusGenInputs['BirmsNearLocationInput'];
   CreateBirmInput: NexusGenInputs['CreateBirmInput'];
   CreateUserInput: NexusGenInputs['CreateUserInput'];
 }
@@ -93,6 +95,7 @@ export interface NexusGenFieldTypes {
     viewer: NexusGenRootTypes['User']; // User!
   }
   User: { // field return type
+    _id: string | null; // String
     account: NexusGenRootTypes['Account']; // Account!
     id: string; // ID!
     username: string | null; // String
@@ -102,7 +105,7 @@ export interface NexusGenFieldTypes {
 export interface NexusGenArgTypes {
   Account: {
     birms: { // args
-      input: NexusGenInputs['CoordinatesInput']; // CoordinatesInput!
+      input: NexusGenInputs['BirmsNearLocationInput']; // BirmsNearLocationInput!
     }
   }
   Mutation: {
@@ -125,7 +128,7 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "Account" | "AuthenticateUserPayload" | "Birm" | "Location" | "Mutation" | "Query" | "User";
 
-export type NexusGenInputNames = "AuthenticateUserInput" | "CoordinatesInput" | "CreateBirmInput" | "CreateUserInput";
+export type NexusGenInputNames = "AuthenticateUserInput" | "BirmsNearLocationInput" | "CreateBirmInput" | "CreateUserInput";
 
 export type NexusGenEnumNames = never;
 

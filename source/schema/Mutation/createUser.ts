@@ -1,5 +1,4 @@
 import { mutationField, inputObjectType, arg } from "nexus";
-import bcrypt from "bcrypt";
 import { AuthenticationError } from "apollo-server";
 
 export const CreateUserInput = inputObjectType({

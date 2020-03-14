@@ -3,7 +3,7 @@
 
 
 type Account {
-  birms(input: CoordinatesInput!): [Birm!]!
+  birms(input: BirmsNearLocationInput!): [Birm!]!
 }
 
 input AuthenticateUserInput {
@@ -21,8 +21,9 @@ type Birm {
   name: String!
 }
 
-input CoordinatesInput {
+input BirmsNearLocationInput {
   coordinates: [Float!]
+  maxDistance: Int
 }
 
 input CreateBirmInput {
@@ -51,6 +52,7 @@ type Query {
 }
 
 type User {
+  _id: String
   account: Account!
   id: ID!
   username: String
