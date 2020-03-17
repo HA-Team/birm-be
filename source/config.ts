@@ -1,4 +1,8 @@
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
 export default {
-  dbUri: 'mongodb://duraace:tuhcMq7492N@ds047955.mlab.com:47955/birm',
-  tokenSecret: 'dk@TvLVPzcu&U2*m@9C1',
+  dbUri: `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@ds047955.mlab.com:47955/birm`,
+  tokenSecret: `${process.env.MLAB_TOKEN}`
 };
