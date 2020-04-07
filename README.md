@@ -1,4 +1,3 @@
-
 # Birm
 
 Virtual geo localized documents (or birms).
