@@ -22,7 +22,7 @@
     "@types/jsonwebtoken": "^8.3.7",
     "@types/mongodb": "^3.5.2",
     "apollo-datasource": "^0.7.0",
-    "apollo-server": "^2.9.16",
+    "apollo-server": "^2.25.4",
     "bcrypt": "^4.0.0",
     "dotenv": "^8.2.0",
     "graphql": "^14.5.8",
